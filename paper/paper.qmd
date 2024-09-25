@@ -43,8 +43,6 @@ cleaned_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 ```
 Loading data with the programming language 'R'[@citeR] and package 'here'[@here], graphs are generate by using the package 'tidyverse'[@tidyverse] and 'ggplot2'[@ggplot]. Codes are adapted from 'Tellingstorieswithdata' [@rohan]
 
-\newpage
-
 ```{r}
 #| label: fig-1
 #| fig-cap: "Number of dogs that have been issued as a dangerous dog in Toronto" 
@@ -158,6 +156,8 @@ ggplot(data = very_severe, aes(x = Breed, y = Num_very, fill = Breed)) +
   theme_minimal() +
   theme(legend.position = "none")
 ```
+
+\newpage
 
 # References
 
