@@ -9,7 +9,7 @@ In this paper, Registry of Dogs Subject to and Issued a Dangerous Dog Order is b
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from Open Data Toronto.
+-   `data/raw_data` contains the raw data as obtained from Open Data Toronto and simulated data from simulation
 -   `data/analysis_data` contains the cleaned dataset that was constructed.
 -   `other` contains details about LLM chat interactions, and sketches of table and graphs expecting
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
@@ -18,4 +18,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in other/llms/usage.txt.
+Aspects of the code were written with the help of the auto-complete tool, Codriver. The entire chat history is available in other/llms/usage.txt.
