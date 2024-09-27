@@ -37,7 +37,7 @@ data <-
   )
 
 # Write_csv
-write_csv(data, file = "data/raw_data/simulated1.csv")
+write_csv(data, file = "data/raw_data/simulated_date.csv")
 
 # Simulates the total number of dangerous act of a breed
 dog_breeds <- c("Breed A", "Breed B", "Breed C")
@@ -57,4 +57,26 @@ total <- results %>%
   group_by(Breed) %>%
   summarise(TotalActs = sum(DangerousActs))
 
-write_csv(total, file = "data/raw_data/simulate2.csv")
+write_csv(total, file = "data/raw_data/simulate_breed.csv")
+
+# Simulates the area happens dog attack
+
+area <- c("M4Y", "M5E", "M6V")
+num_acts <- 100
+
+# Create an empty data frame to store results
+results1 <- data.frame(Act = rep(1:num_acts, times = length(area)),
+                       Area = rep(area, each = num_acts),
+                       DangerousActs1 = integer(num_acts * length(area)))
+
+# Simulate the number of dangerous acts for each area
+for (i in 1:length(area)) {
+  results1$DangerousActs1[results1$Area == area[i]] <- rpois(num_acts, 10)
+}
+# Calculate total number of dangerous acts for each area
+data1 <- results1 %>%
+  group_by(Area) %>%
+  summarise(TotalActs = sum(DangerousActs1))
+
+#Write csv
+write_csv(data1, file = "data/raw_data/simulated_area.csv")

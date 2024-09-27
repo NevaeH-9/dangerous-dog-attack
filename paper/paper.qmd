@@ -1,13 +1,17 @@
 ---
 title: "Data analysis of dangerous dog attack"
-subtitle: "Analyzing the circumstance of dog attack and compare data to find out the most dangerous breed"
+subtitle: "Analyzing the circumstance of dog attack and compare data to find out the most dangerous breed and area"
 author: 
   - Yuanchen Miao
 thanks: "Code and data are available at: https://github.com/NevaeH-9/dangerous-dog-attack.git."
 date: 24 september 2024
 date-format: long
-abstract: "Nowadays, almost every family choose to have a pet, mostly dogs. Dogs have their innate nature to protect themselves or their owner from the danger they meet, sometimes they bark at it, sometimes they make an attack on it. Dogs require training from human to prevent them from attacking or barking at people, but some breed of dogs have stronger aggressive desire, in some situations, these breed of dogs probably attack people after training. In this report, data of Registry of Dogs Subject to and Issued a Dangerous Dog Order from Open Data Toronto is used, this data is refreshed monthly to today and all died dogs are removed from the data. There appears some specific breed of dogs are more likely to attack people and causing worse attck circumstance."
-format: pdf
+abstract: "In this paper, Registry of Dogs Subject to and Issued a Dangerous Dog Order is being analyzed and tested.After pandemic, more and more people choose to have a pet, most of them are dogs, dog attacks are becoming more often than before. The following paper discusses about the frequency of dangerous dog act along time and what breed of dogs are causing more dog attack issue in Toronto between 2017 to 2024. With the test to the dataset from open data toronto, dogs that are assigned as dangerous dog increased a lot after pandemic and bulldog and shepherd breed are showed to be more aggressive. "
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -20,20 +24,27 @@ bibliography: references.bib
 library(tidyverse)
 library(here)
 library(dplyr)
+library(knitr)
 ```
 
 
 
 # Introduction {#sec-introduction}
+Dog attack is the most normal and minor harm to people in the neighborhood or society, but it is still causing a serious circumstances to individual safety and mental health. There are a lot of [reasons](https://www.calmcanineacademy.com/blog/2020/11/06/let-s-talk-about-dog-attacks) for dog to attack people, under pressure, defending themselves, barriers, etc. Dog training is a must for dog owners to do, but some of the breed are showing more aggressive desire and some of the owners do not pay enough attention on dog training. Avoiding such breed or area is very important for people who wants to own a dog or government to reduce the number of dangerous dog act report and protect themselves.
 
-Since a lot of people are owning dogs nowadays and dogs have possibility to be triggered to attack people with a lot of different [reasons](https://www.calmcanineacademy.com/blog/2020/11/06/let-s-talk-about-dog-attacks), like barriers, resources, 'trigger stacking'[@calmcanine2020], there are a lot of people reporting they are getting attack by dogs every year. There are [2726 service requests](https://www.cbc.ca/news/canada/toronto/dangerous-dog-owners-new-rules-city-toronto-1.7183803#:~:text=Toronto%20Animal%20Services%20investigates%20all,increase%20from%202%2C653%20in%202022.) for potentially dog attack in '2023'[@cbc2023].
+There are a lot of people reporting they are getting attack by dogs every year, [2726 service requests](https://www.cbc.ca/news/canada/toronto/dangerous-dog-owners-new-rules-city-toronto-1.7183803#:~:text=Toronto%20Animal%20Services%20investigates%20all,increase%20from%202%2C653%20in%202022.) are reported for potentially dog attack in '2023'[@cbc2023]. Dog attack can cause a very bad and terrifying circumstance, if the dog is not vaccinated, it could carry lyssavirus and other serious virus with it, individuals have chance to get infected and have life threatened after getting bites by dogs. Getting attack by dogs will also leave a terrifying experience to individuals that causing these individuals panics in a period of time. On June 28, 2023, global news have reported that a 6-year-old girl bitten by two dogs in Toronto and it leaves her serious injured, the girl got a cut on her leg bleeding and the bite was really bad.[@child].  There is also another report on February 9, 2024, A woman was seriously bitten by dog when she was waiting for bus and she was seriously injured on her left arm and face. She described the dog attack as "Scared of my life"[@woman]. Dog attacks are very dangerous when it happens, individuals should take the threat more seriously. Thus, avoid breed with more aggressive desire and be more careful in higher dog attack frequency area should be considered.
+
+In this paper, The data set **"About registry of Dogs Subject to and Issued a Dangerous Dog Order" **[@toronto2023] that records the dogs that have been issued as dangerous dog and the reports of these dogs from 2017 to 2024 has been used to test which area in Toronto has more dog attacks and what breed of dogs are tend to have more aggressive desire, in other words, more dangerous to be close to these breed. This paper finds evidence to suggest that dogs with bulldog and shepherd gene are more aggressive and dog with bulldog gene are having worse bite circumstances. Owners of these breed of dogs should spend more time on training these dog and people should avoid getting too close to these dogs. The area with postal code "M4L" are having more dangerous dogs than other areas, people needs to be more careful when they are in this area.
+
+The structure of the paper are as follows: @sec-data-overview introduced the data, programming language and package used in the paper.@sec-data-cleandata introduces that what has been done to clean the original data and variables we are using to do the comparison. Also, what has been done to reduced the variable in the original data.  @sec-results are having tests and compare the variables from the data. Brief explain about the result we get after the tests. @secdiscussion discusses the tests in details and find results of dangerous breed and area. @sec-limitations discusses the limitation of the data and analyze. Introduce the next step to make the paper more reliable.
 
 # Data {#sec-data}
 
 ## Overview {#sec-data-overview}
-The dataset '"About registry of Dogs Subject to and Issued a Dangerous Dog Order" '[@toronto2023]has been used in this paper to analyze what breed of dogs are tend to be more aggressive and what breed of dogs is making worse attack circumstances. 'Programming language R'[@citeR] is been used in this paper to clean and analyze the dataset. Packages that could installed in R: 'tidyverse'[@tidyverse], 'ggplot2'[@ggplot], 'dplyr'[@dplyr], 'here'[@here] and ‘opendatatoronto'[@opendatatoronto]are used to download the dataset to R and making test to the dataset.
+The dataset **"About registry of Dogs Subject to and Issued a Dangerous Dog Order" **[@toronto2023]has been used in this paper to analyze what breed of dogs are tend to be more aggressive and causing worse attack circumstances, and what areas in toronto are having more frequent dog attacks. Programming language R[@citeR] is been used in this paper to clean and analyze the dataset. Packages used to create graph and make the whole paper tidy are: tidyverse[@tidyverse], ggplot2[@ggplot], dplyr[@dplyr], here[@here] and knitr[@knitr]. Package opendatatoronto[@opendatatoronto]are used to download the dataset to R. Codes are adapted from Tellingstorieswithdata [@rohan]
 
-## Results {#sec-data-results}
+## Clean data {#sec-data-cleandata}
+The raw data downloaded from opendatatoronto[@opendatatoronto] have no variables showing a "NA" and none of these data showing 0. Since the paper only cares about the bite circumstances after attack, dog breed and  forward sortation area, so other columns are removed from the raw data. There are a lot mix breed contained in the original data, these breeds are being consiered as the same main breed, for example, "LABRADOR RETR / BORDER COLLIE" are considered as "LABRADOR RETR". Only the first 3 digits of the postal code are being recorded in the data, thus, the range of the area being analyzed will be as same as the range of 3 digits of the postal code. @tbl-1 is giving first 5 rows for a brief view of cleaned data.
 ```{r}
 #| echo: false
 #| warning: false
@@ -41,7 +52,19 @@ The dataset '"About registry of Dogs Subject to and Issued a Dangerous Dog Order
 
 cleaned_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 ```
-Loading data with the programming language 'R'[@citeR] and package 'here'[@here], graphs are generate by using the package 'tidyverse'[@tidyverse] and 'ggplot2'[@ggplot]. Codes are adapted from 'Tellingstorieswithdata' [@rohan]
+
+```{r}
+#| label: tbl-1
+#| tab-cap: "Sample of cleaned data" 
+#| warning: false
+#| message: false
+#| echo: false
+
+
+cleaned_table <- cleaned_data %>%
+  head(5)
+kable(cleaned_table, caption = "Cleaned data")
+```
 
 ```{r}
 #| label: fig-1
@@ -61,28 +84,15 @@ cleaned_data1 |>
        x = "Year", y = "Dangerous act"
        ) 
 ```
-More dogs are issued as dangerous dog between year 2022 to 2024(@fig-1)
+How many dogs are issued as dangerous dog each year are the first thing we are interested in. From the graph in @fig-1, we see that more dogs are being issued as dangerous dog after 2022 which is the year of pandemic. People choose to own a dog as pet to bring happiness and reduce the feeling of lonely and anxiety about the pandemic period. The frequency of dog attack increased since then. There could be a lot of different reasons, the number increase of dogs, lack of training for dogs, more pressure for dogs than before. Since the data contains a huge amount of different observations, we do not need to worry about the issue caused by lack of observations.
 
+
+# Results {#sec-results}
+
+## Finding the most dangerous breed by comparison{#sec-results-breed} 
 ```{r}
 #| label: fig-2
-#| fig-cap: "Number of different attack circumstance " 
-#| warning: false
-#| message: false
-#| echo: false
-
-cleaned_data1 |>
-  ggplot(aes(x = Bite_Circumstance)) +
-  geom_bar() +
-  theme_minimal() + 
-  labs(title = "number of different bite circumstances",
-       x = "Bite circumstances", y = "number of bite circumstances"
-       ) 
-```
-The figure shows that the circumstances of bite by dogs (@fig-2)
-
-```{r}
-#| label: fig-3
-#| fig-cap: "Breed of dogs that has dangerous act above the mean of dangerous dog order" 
+#| fig-cap: "Breed of dogs that has issued as dangerous dog above the mean number" 
 #| warning: false
 #| message: false
 #| echo: false
@@ -103,14 +113,33 @@ ggplot(data = filtered_breeds, aes(x = Breed, y = Num_Dangerous_Acts, fill = Bre
        y = "Number of Dangerous Acts") +
   theme_minimal() +
   theme(
-    legend.position = "none",axis.title.x = element_text(size = 1), axis.text.x = element_text(size = 6)
+    legend.position = "none",axis.title.x = element_text(size = 6), axis.text.x = element_text(size = 4)
   )
 ```
-If the breed of dog contains the gene of BULLDOG ro SHEPHERD, they are tend to be more aggressive.@fig-3
+By integrate all the mix breed into the same breed, we have reduced the number of breeds in the data set that we could find out the what kind of breed are showing higher aggressive desire overall. From @fig-2, we see dogs with bulldog or shepherd gene are being assigned as dangerous dogs more than other dogs with other genes. There are over 70 dogs with bulldog gene have been issued as dangerous dog and over 60 dogs with shepherd gene are issued as dangerous dog.
+
+## Comparison on bite circumstances{#sec-results-circumstances}
+```{r}
+#| label: fig-3
+#| fig-cap: "Number of different attack circumstance " 
+#| warning: false
+#| message: false
+#| echo: false
+
+cleaned_data1 |>
+  ggplot(aes(x = Bite_Circumstance)) +
+  geom_bar() +
+  theme_minimal() + 
+  labs(title = "number of different bite circumstances",
+       x = "Bite circumstances", y = "number of bite circumstances"
+       ) 
+```
+Through @fig-3 we see that over 200 bite circumstances are severe and over 25 of them are very severe. Bite circumstance is the point how we are going to compare each dogs and getting the result of the most dangerous dog breed.
+
 
 ```{r}
 #| label: fig-4
-#| fig-cap: "Number of severe each breed of dog caused" 
+#| fig-cap: "Number of severe each breed of dog caused above mean" 
 #| warning: false
 #| message: false
 #| echo: false
@@ -132,12 +161,12 @@ ggplot(data = filtered_breeds1, aes(x = Breed, y = Num_severe, fill = Breed)) +
        x = "Breed of Dog",
        y = "Number of 'severe' Reports") +
   theme_minimal() +
-  theme(legend.position = "none", axis.text.x = element_text(size = 6))
+  theme(legend.position = "none", axis.text.x = element_text(size = 4))
 ```
 
 ```{r}
 #| label: fig-5
-#| fig-cap: "Number of very severe each breed of dog caused" 
+#| fig-cap: "Number of very severe each breed of dog caused above mean" 
 #| warning: false
 #| message: false
 #| echo: false
@@ -154,8 +183,70 @@ ggplot(data = very_severe, aes(x = Breed, y = Num_very, fill = Breed)) +
        x = "Breed of Dog",
        y = "Number of 'VERY SEVERE' Reports") +
   theme_minimal() +
-  theme(legend.position = "none")
+  theme(legend.position = "none", axis.text.x = element_text(size = 4))
 ```
+By doing the further comparison in bite circumstances, we focused on severe and very severe bite circumstances to see what breed are causing most of these situation. The comparison only consider the breed that has been issued as dangerous dogs for severe and very severe bite circumstances above the mean number of dogs that have been issued. From @fig-4 we see that bulldog have been report for severe bite circumstances over 40 times and shepherd over 30 times. Bulldog is also having the most number of very severe reports as very severe in @fig-5 for 6 times. Mastiff and shepherd are the second highest as 2 times.
+
+## Finding the area with highest number dangerous dog issued{#sec-results-area}
+```{r}
+#| label: fig-6
+#| fig-cap: "Areas of dog attack above the mean" 
+#| warning: false
+#| message: false
+#| echo: false
+
+area_counts <- cleaned_data %>%
+  group_by(Forward_Sortation_Area) %>%
+  summarise(Num_Dangerous_Acts = n())
+
+filtered_areas <- area_counts %>%
+  filter(Num_Dangerous_Acts > 7)
+
+ggplot(data = filtered_areas, aes(x = Forward_Sortation_Area, y = Num_Dangerous_Acts)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Dog Breeds with Dangerous Acts Above the Mean",
+       x = "Postal code",
+       y = "Number of Dangerous Acts") +
+  theme_minimal() +
+  theme(
+    legend.position = "none",axis.text.x = element_text(size = 6)
+  )
+
+```
+
+
+
+```{r}
+#| label: tbl-2
+#| tab-cap: "Areas of dog attack above the mean" 
+#| warning: false
+#| message: false
+#| echo: false
+
+area_counts <- cleaned_data %>%
+  group_by(Forward_Sortation_Area) %>%
+  summarise(dangerous_dogs = n())
+
+mean_value <- mean(area_counts$dangerous_dogs)
+
+filtered_areas <- area_counts %>%
+  filter(dangerous_dogs > 7)
+
+# Display the summary table
+kable(filtered_areas, caption = "Areas of dog attack above the mean")
+```
+
+Finally, we are doing comparison between areas with first 3 digits of postal code, @fig-6 shows the first 3 digits postal code has more than 7 dangerous dogs and "M4L" is having the most of these. @tbl-2 presents that "M4L“ has 14 dogs issued as dangerous dogs and "M1E", "M2J", "M4J" all have 12 dogs have been issued.
+
+# Discussion{#sec-discussion}
+
+Toronto has scaled level of bites from 0 to 5[@level], where 0 is not a bite and 5 refers to victim is deceased as a result of bite or attack. level 4 stands for multiple-bite incident. Thus, we are connect level 1 as non severe, level 2 as severe and level 3 as very severe. level 2 stands for one to four punctures from a single bite with no deep punctures and level 3 is one to four punctures from a single bite with at least 1 deep puncture and dog clamps down without a quick release. Combining this evidence with @fig-4 and @fig-5, and the overall counts of dog attack above mean from @fig-2. We are having enough evidence to claim that dogs with bulldog gene are most dangerous and they are expected to have more aggressive desire among all of the breed of dogs. The shepherd breed is second highest which means the breed of shepherd is also having a higher chance to attack people or dogs. Interestingly, the breed of mastiff is not issued as dangerous dog in a huge number overall but it has been report 2 times of very severe bite circumstance. The owner of mastiff should also take more care about the dog. By comparison in different area in @fig-6 and @tbl-2, we find 4 areas that have been issued over 10 dangerous dog, people should be more careful when they are around these areas.
+Government should take more actions on breed like bulldog and shepherd to prevent more dog attacks happen in Toronto and these areas with over 10 dangerous dog issued needs more attention when people are walking their dogs to avoid dogs get scared or nervous which ends as dog attack
+
+# Limitations and next step {#sec-limitations}
+When doing the data cleaning, since there are a lot of different breed mix in the data, these breeds are integrated into one like mentioned, this will cause inaccurate when compare the dangerous that is issued in @fig-2, @fig-4 and @fig-5. Which could do is compare these different mix of breed separate which makes the result more reliable.
+
+In @fig-6, there could be a lot of reasons why that area is having more dangerous dog issued, higher population than area, more people are living there or there could be a dog park in the area that a lot of people bring their dog from other place. To make this analyze and result more accurate, more details about the area will be needed.
 
 \newpage
 

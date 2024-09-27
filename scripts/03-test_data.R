@@ -2,7 +2,7 @@
 # Purpose: Sanity check of the data
 # Author: Yuanchen Miao
 # Date: 24 September 2024
-# Contact: vicnent.miao@mail.utoronto.ca
+# Contact: vincent.miao@mail.utoronto.ca
 # License: none
 # Pre-requisites: need to have the analyzed data
 # Any other information needed? none

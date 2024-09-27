@@ -2,7 +2,7 @@
 # Purpose: Downloads and saves the data from opendatatoronto
 # Author: Yuanchen Miao
 # Date: 24 September 2024
-# Contact: vicnent.miao@mail.utoronto.ca
+# Contact: vincent.miao@mail.utoronto.ca
 # License: none
 # Pre-requisites: none
 # Any other information needed? none

@@ -2,7 +2,7 @@
 # Purpose: Cleans the raw dangerous act data by two observations, date and breed
 # Author: Yuanchen Miao
 # Date: 24 September 2024
-# Contact: vicnent.miao@mail.utoronto.ca
+# Contact: vincent.miao@mail.utoronto.ca
 # License: none
 # Pre-requisites: the raw data downloaded from open data toronto
 # Any other information needed? none
@@ -13,8 +13,9 @@ library(tidyverse)
 #### Clean data ####
 raw_data <- read_csv("data/raw_data/raw_data.csv")
 
-cleaned_data <- raw_data[c("Breed", "Bite_Circumstance", "Date_of_Dangerous_Act")]
+cleaned_data <- raw_data[c("Breed", "Bite_Circumstance", "Date_of_Dangerous_Act", "Forward_Sortation_Area")]
 
+####Integrate breed of dogs together####
 cleaned_data <- cleaned_data %>%
   mutate(Breed = case_when(
     grepl("HUSKY", Breed, ignore.case = TRUE) ~ "Husky",
@@ -133,6 +134,12 @@ cleaned_data <- cleaned_data %>%
   mutate(Breed = case_when(
     grepl("POODLE MIN", Breed, ignore.case = TRUE) ~ "POODLE MIN",
     TRUE ~ Breed
+  ))
+
+cleaned_data <- cleaned_data %>%
+  mutate(Bite_Circumstance = case_when(
+    grepl("NAB", Bite_Circumstance, ignore.case = TRUE) ~ "NOT A BITE",
+    TRUE ~ Bite_Circumstance
   ))
 #### Save data ####
 write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")
