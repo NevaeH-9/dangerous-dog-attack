@@ -1,4 +1,4 @@
-# dangerous dog data analyze
+# DANGEROUS DOG DATA ANALYZING TO FIND WHICH BREED AND AREA ARE MORE DANGEROUS FORM 2017-2023
 
 ## Overview
 
@@ -18,4 +18,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The entire chat history is available in other/llms/usage.txt.
+Aspects of the code were written with the help of the auto-complete tool, ChatGPT. The entire chat history is available in other/llms/usage.txt.
